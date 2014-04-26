@@ -1,25 +1,114 @@
 package com.forrestpruitt.psp;
 
-import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureLoader;
+import org.newdawn.slick.util.ResourceLoader;
 
 public class GameObject
 {
-	Rectangle box;
-	private Texture texture;
+	protected int id;
+	protected String tag;
+	protected float x, lastX, y, lastY, width, height;
+	protected boolean drawable, enabled;
+	protected Texture texture;
+	protected Rectangle2D.Float box;
 
-	// construct an Entity whose box and texture is 'width' pixels
-	public GameObject(int width) throws IOException {
+	/**
+	 * Most basic constructor, construct with just an id and tag.
+	 * 
+	 * @param id
+	 *            an ideally unique value to identify this object.
+	 * @param tag
+	 *            a string representation of this object.
+	 */
+	public GameObject(int id, String tag) {
 
+		this.id = id;
+		this.tag = tag;
 	}
 
-	// draw textured quad at the rectangle coordinates
+	// SETTERS
+	public void setX(float x)
+	{
+		this.lastX = this.x;
+		this.x = x;
+		box.x = x;
+	}
+
+	public void setY(float y)
+	{
+		this.lastY = this.y;
+		this.y = y;
+		box.y = y;
+	}
+
+	public void setWidth(float width)
+	{
+		this.width = width;
+		this.box.width = width;
+	}
+
+	public void setHeight(float height)
+	{
+		this.height = height;
+		this.box.height = height;
+	}
+
+	public void setTag(String tag)
+	{
+		this.tag = tag;
+	}
+
+	// GETTERS
+	public float getX()
+	{
+		return x;
+	}
+
+	public float getY()
+	{
+		return y;
+	}
+
+	public float getWidth()
+	{
+		return width;
+	}
+
+	public float getHeight()
+	{
+		return height;
+	}
+
+	public int getID()
+	{
+		return id;
+	}
+
+	public String getTag()
+	{
+		return tag;
+	}
+
+	public Rectangle2D.Float getBox()
+	{
+		return this.box;
+	}
+
+	public boolean isIntersecting(GameObject otherObject)
+	{
+		if (otherObject.getBox().intersects(this.box))
+			return true;
+		else
+			return false;
+	}
+
 	public void draw()
 	{
-
 		float x = (float) box.getX();
 		float y = (float) box.getY();
 		float width = (float) box.getWidth();
@@ -28,25 +117,30 @@ public class GameObject
 		// make the loaded texture the active texture for the OpenGL context
 		// texture.bind();
 
-		// going to send a series of quad vertices...
 		GL11.glBegin(GL11.GL_QUADS);
 
-		// top-left of texture tied to top-left of box
-		GL11.glTexCoord2f(0, 0);
+		GL11.glTexCoord2f(0, 0); // top-left
 		GL11.glVertex2f(x, y);
-
-		// top-right
-		GL11.glTexCoord2f(1, 0);
+		GL11.glTexCoord2f(1, 0); // top-right
 		GL11.glVertex2f(x + width, y);
-
-		// bottom-right
-		GL11.glTexCoord2f(1, 1);
+		GL11.glTexCoord2f(1, 1); // bottom-right
 		GL11.glVertex2f(x + width, y + height);
-
-		// bottom-left
-		GL11.glTexCoord2f(0, 1);
+		GL11.glTexCoord2f(0, 1); // bottom-left
 		GL11.glVertex2f(x, y + height);
 
 		GL11.glEnd();
+	}
+
+	private void initTexture(String textureLocation)
+	{
+		try
+		{
+			texture = TextureLoader.getTexture("PNG",
+					ResourceLoader.getResourceAsStream(textureLocation));
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 }
