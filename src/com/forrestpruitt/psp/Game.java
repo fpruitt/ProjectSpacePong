@@ -2,6 +2,9 @@ package com.forrestpruitt.psp;
 
 import java.io.IOException;
 
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -11,11 +14,17 @@ public class Game
 {
 	public final static int SCREEN_WIDTH = 800;
 	public final static int SCREEN_HEIGHT = 600;
+	public static int NUM_PLAYERS;
 	public final String GAME_NAME = "Project Space Pong";
 	ObjectManager manager;
 
 
 	Timer timer;
+
+	public Game(int numPlayers)
+	{
+		NUM_PLAYERS = numPlayers;
+	}
 
 	public void start()
 	{
@@ -86,7 +95,27 @@ public class Game
 
 	public static void main(String[] args) throws IOException, LWJGLException
 	{
-		Game gamebase = new Game();
+		/*
+		 * JDialog dialog = new JDialog(); dialog.setTitle("How Many Players?");
+		 * dialog.setSize(300, 200); dialog.setLocationRelativeTo(null); JLabel
+		 * prompt = new JLabel(
+		 * "Will this be a single player or two player game?"); JButton single =
+		 * new JButton("Single Player"); JButton multi = new
+		 * JButton("Multiplayer"); dialog.add(prompt); dialog.add(single);
+		 * dialog.add(multi); dialog.setVisible(true);
+		 */
+		Object[] options =
+		{ "Single Player", "Multiplayer" };
+		JDialog dialog = new JDialog();
+		dialog.setTitle("How Many Players?");
+		int numPlayers = JOptionPane.showOptionDialog(dialog,
+				"Will this be a single player or two-player game?",
+				"A Silly Question", JOptionPane.YES_NO_CANCEL_OPTION,
+				JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+		// If numPlayers is 0, single player game will be launched.
+		// Otherwise, no AI will be started for top paddle and two players
+		// will be playing.
+		Game gamebase = new Game(numPlayers);
 		gamebase.start();
 	}
 
