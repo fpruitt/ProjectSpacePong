@@ -131,7 +131,7 @@ public class GameObject
 		GL11.glEnd();
 	}
 
-	private void initTexture(String textureLocation)
+	protected void initTexture(String textureLocation)
 	{
 		try
 		{
