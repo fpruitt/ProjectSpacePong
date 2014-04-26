@@ -9,7 +9,7 @@ public class ObjectManager
 	// Global Collections of Objects
 	static LinkedList<GameObject> objects = new LinkedList<GameObject>();
 	static LinkedList<GameObject> enemies = new LinkedList<GameObject>();
-
+	private final static int PADDLE_HEIGHT_OFFSET = 5;
 	public ObjectManager()
 	{
 		initObjects();
@@ -20,13 +20,14 @@ public class ObjectManager
 		// Create the two paddles
 		PlayerPaddle bottomPaddle = new PlayerPaddle(0, "bottomPaddle",
 				"/res/white.png");
-		bottomPaddle.setY(Game.SCREEN_HEIGHT - 10);
-		bottomPaddle.setX(Game.SCREEN_WIDTH / 2 + bottomPaddle.width / 2);
+		bottomPaddle.setY(PADDLE_HEIGHT_OFFSET);
+		bottomPaddle.setX(Game.SCREEN_WIDTH / 2 - bottomPaddle.width / 2);
 
 		PlayerPaddle topPaddle = new PlayerPaddle(1, "topPaddle",
 				"/res/white.png");
-		topPaddle.setX(Game.SCREEN_WIDTH / 2 + topPaddle.width / 2);
-		topPaddle.setY(5);
+		topPaddle.setX(Game.SCREEN_WIDTH / 2 - bottomPaddle.width / 2);
+		topPaddle.setY(Game.SCREEN_HEIGHT - topPaddle.height
+				- PADDLE_HEIGHT_OFFSET);
 
 		// Create the walls
 		GameObject leftWall = new GameObject(2, "leftWall");

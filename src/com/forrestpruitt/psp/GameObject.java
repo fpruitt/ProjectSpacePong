@@ -30,6 +30,7 @@ public class GameObject
 		this.id = id;
 		this.tag = tag;
 		box = new Rectangle2D.Float();
+		enabled = true;
 	}
 
 	// SETTERS
@@ -110,13 +111,15 @@ public class GameObject
 
 	public void draw()
 	{
+		// System.out.println("Drawing " + tag + "at x=" + x + ", y= " + y);
 		float x = (float) box.getX();
 		float y = (float) box.getY();
 		float width = (float) box.getWidth();
 		float height = (float) box.getHeight();
 
+		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 		// make the loaded texture the active texture for the OpenGL context
-		// texture.bind();
+		texture.bind();
 
 		GL11.glBegin(GL11.GL_QUADS);
 
@@ -138,6 +141,7 @@ public class GameObject
 		{
 			texture = TextureLoader.getTexture("PNG",
 					ResourceLoader.getResourceAsStream(textureLocation));
+			System.out.println("Loaded texture for " + tag);
 		}
 		catch (IOException e)
 		{
