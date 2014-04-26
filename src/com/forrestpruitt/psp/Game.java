@@ -23,7 +23,8 @@ public class Game
 
 	public Game(int numPlayers)
 	{
-		NUM_PLAYERS = numPlayers;
+		NUM_PLAYERS = numPlayers + 1; // Offset zero index to 1 index, ie 1 or 2
+										// players
 	}
 
 	public void start()

@@ -2,6 +2,8 @@ package com.forrestpruitt.psp;
 
 import java.util.LinkedList;
 
+import org.lwjgl.input.Keyboard;
+
 public class PlayerPaddle extends GameObject
 {
 	// Constants for player ships
@@ -25,7 +27,61 @@ public class PlayerPaddle extends GameObject
 
 	public void update()
 	{
+		pollInput();
+	}
 
+	public void pollInput()
+	{
+		// If this is a single player game, only poll for the bottom paddle.
+		int wallColliding = checkWallCollisions(); // -1 = left wall, 0 = no
+													// wall, 1 = right wall
+		if (this.tag == "bottomPaddle")
+		{
+			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT))
+			{
+				if (wallColliding != -1)
+				{
+					this.setX(this.getX() - SHIP_SPEED);
+				}
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
+			{
+				if (wallColliding != 1)
+				{
+					System.out.println("Moving right...");
+					this.setX(this.getX() + SHIP_SPEED);
+				}
+			}
+
+			// Make sure ship is still within bounds, fix if not.
+			if (this.getX() < 0)
+				this.setX(0);
+			else if (this.getX() > Game.SCREEN_WIDTH - this.width)
+				this.setX(Game.SCREEN_WIDTH - this.width);
+		}
+		else if (this.tag == "topPaddle" && Game.NUM_PLAYERS == 2)
+		{
+			if (Keyboard.isKeyDown(Keyboard.KEY_A))
+			{
+				if (wallColliding != -1)
+				{
+					this.setX(this.getX() - SHIP_SPEED);
+				}
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_D))
+			{
+				if (wallColliding != 1)
+				{
+					this.setX(this.getX() + SHIP_SPEED);
+				}
+			}
+
+			// Make sure ship is still within bounds, fix if not.
+			if (this.getX() < 0)
+				this.setX(0);
+			else if (this.getX() > Game.SCREEN_WIDTH - this.width)
+				this.setX(Game.SCREEN_WIDTH - this.width);
+		}
 	}
 
 	/**
@@ -37,7 +93,7 @@ public class PlayerPaddle extends GameObject
 	{
 		for(GameObject object : ObjectManager.objects)
 		{
-			String thisTag = object.getTag();
+			String thisTag = this.getTag();
 			//If the object is intersecting this paddle and it is a wall
 			if(object.isIntersecting(this) && (thisTag.equalsIgnoreCase("leftWall") || thisTag.equalsIgnoreCase("rightWall")));
 			{
@@ -45,7 +101,7 @@ public class PlayerPaddle extends GameObject
 				{
 					return -1;
 				}
-				else
+				else if (thisTag.equalsIgnoreCase("rightWall"))
 					return 1;
 			}
 		}
