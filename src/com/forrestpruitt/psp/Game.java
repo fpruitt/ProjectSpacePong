@@ -12,11 +12,8 @@ public class Game
 	public final static int SCREEN_WIDTH = 800;
 	public final static int SCREEN_HEIGHT = 600;
 	public final String GAME_NAME = "Project Space Pong";
+	ObjectManager manager = new ObjectManager();
 
-	// Game Objects
-	PlayerPaddle player;
-	GameObject leftWall;
-	GameObject rightWall;
 
 	Timer timer;
 
@@ -31,7 +28,6 @@ public class Game
 		while (!Display.isCloseRequested())
 		{
 			update();
-			rednerGL();
 			Display.sync(60);
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 			Display.update();
@@ -77,6 +73,8 @@ public class Game
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 		timer.updateFPS();
 		Display.setTitle(GAME_NAME + "   FPS: " + timer.getFPS());
+		manager.updateObjects();
+
 	}
 
 	public static void main(String[] args) throws IOException, LWJGLException

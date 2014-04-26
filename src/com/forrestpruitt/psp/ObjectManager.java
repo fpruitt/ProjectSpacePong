@@ -2,6 +2,8 @@ package com.forrestpruitt.psp;
 
 import java.util.LinkedList;
 
+import org.lwjgl.opengl.GL11;
+
 public class ObjectManager
 {
 	// Global Collections of Objects
@@ -47,9 +49,26 @@ public class ObjectManager
 		objects.add(rightWall);
 	}
 
-	public void drawObjects()
+	// Logically update then draw each object
+	public void updateObjects()
 	{
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+		for (GameObject object : objects)
+		{
+			object.update();
+			object.draw();
+		}
+	}
 
+	public void doRemove()
+	{
+		for (int i = 0; i < objects.size(); i++)
+		{
+			if (!objects.get(i).enabled)
+			{
+				objects.remove(i);
+			}
+		}
 	}
 
 }

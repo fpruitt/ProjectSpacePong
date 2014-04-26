@@ -143,4 +143,9 @@ public class GameObject
 			e.printStackTrace();
 		}
 	}
+
+	public void update()
+	{
+
+	}
 }
