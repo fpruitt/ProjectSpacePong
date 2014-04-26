@@ -12,7 +12,7 @@ public class Game
 	public final static int SCREEN_WIDTH = 800;
 	public final static int SCREEN_HEIGHT = 600;
 	public final String GAME_NAME = "Project Space Pong";
-	ObjectManager manager = new ObjectManager();
+	ObjectManager manager;
 
 
 	Timer timer;
@@ -22,8 +22,16 @@ public class Game
 		timer = new Timer();
 
 		// initialize opengl context
-		initGL(SCREEN_WIDTH, SCREEN_HEIGHT);
-
+		try
+		{
+			initGL(SCREEN_WIDTH, SCREEN_HEIGHT);
+		}
+		catch (LWJGLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		manager = new ObjectManager();
 		// standard game loop
 		while (!Display.isCloseRequested())
 		{

@@ -29,6 +29,7 @@ public class GameObject
 
 		this.id = id;
 		this.tag = tag;
+		box = new Rectangle2D.Float();
 	}
 
 	// SETTERS
