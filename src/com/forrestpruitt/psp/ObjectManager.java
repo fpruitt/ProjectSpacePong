@@ -19,11 +19,11 @@ public class ObjectManager
 	private static void initObjects()
 	{
 		// Create the two paddles
-		PlayerPaddle bottomPaddle = new PlayerPaddle(0, "bottomPaddle", "/res/white.png");
+		PlayerPaddle bottomPaddle = new PlayerPaddle(0, "bottomPaddle", "/res/paddleBottom.png");
 		bottomPaddle.setY(PADDLE_HEIGHT_OFFSET);
 		bottomPaddle.setX(Game.SCREEN_WIDTH / 2 - bottomPaddle.width / 2);
 
-		PlayerPaddle topPaddle = new PlayerPaddle(1, "topPaddle", "/res/white.png");
+		PlayerPaddle topPaddle = new PlayerPaddle(1, "topPaddle", "/res/paddleTop.png");
 		topPaddle.setX(Game.SCREEN_WIDTH / 2 - bottomPaddle.width / 2);
 		topPaddle.setY(Game.SCREEN_FIELD_HEIGHT - topPaddle.height
 				- PADDLE_HEIGHT_OFFSET);
