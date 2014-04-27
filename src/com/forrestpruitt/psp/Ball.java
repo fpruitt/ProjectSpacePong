@@ -80,7 +80,7 @@ public class Ball extends GameObject
 				// First, find out how large each of the 10 chunks need to be
 				float chunkSize = object.getWidth() / 10;
 				// Get ball offset on paddle
-				float paddleOffset = getX() - object.getX();
+				float paddleOffset = (getX() - object.getX()) + (getWidth() / 2);
 				// Figure out which 'chunk' the ball is in, and therefore how it should bounce.
 				if (paddleOffset <= 1 * chunkSize)
 				{
