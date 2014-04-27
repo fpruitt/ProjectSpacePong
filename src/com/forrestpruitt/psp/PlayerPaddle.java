@@ -7,14 +7,16 @@ import org.lwjgl.input.Keyboard;
 public class PlayerPaddle extends GameObject
 {
 	// Constants for player ships
-	private final float GAME_DIFFICULTY = 1.0f;
 	private final int SHIP_SPEED = 40;
 	private final float SHIP_WIDTH = 100;
 	private final float SHIP_HEIGHT = 15;
-	private final int MAX_SHOTS = 2; // The maximum number of shots allowed on
-										// screen from this ship at once.
+	private final int MAX_SHOTS = 2; // The maximum number of shots allowed on screen from this ship at once.
+	// Parameters for AI
 	public boolean isComputer;
-
+	private final float GAME_DIFFICULTY = 10.0f;
+	private int framesSinceMovement = 0; // Used to restrict how quickly computer can make decisions.
+	private int lastMove = 0;
+	private int AI_DECISION_LAPSE = 15;
 	private LinkedList<GameObject> currentColliding = new LinkedList<GameObject>();
 
 	public PlayerPaddle(int id, String tag, String spriteLocation)
@@ -85,25 +87,58 @@ public class PlayerPaddle extends GameObject
 		//Paddle AI
 		else if (this.tag == "topPaddle" && Game.NUM_PLAYERS == 1)
 		{
-			
-			float centerOfPaddle = getX() + (getWidth()/2);
-			if(Ball.yDirection * Ball.ballSpeed > 0)
+			if (framesSinceMovement > AI_DECISION_LAPSE)
 			{
-				if (centerOfPaddle < ObjectManager.ball.getX())
+				float centerOfPaddle = getX() + (getWidth() / 2);
+				if (Ball.yDirection * Ball.ballSpeed > 0)
+				{
+					if (centerOfPaddle < (int) ObjectManager.ball.getX())
+					{
+						setX(getX() + SHIP_SPEED / GAME_DIFFICULTY);
+						lastMove = -1;
+					}
+					else if (centerOfPaddle > (int) ObjectManager.ball.getX())
+					{
+						setX(getX() - SHIP_SPEED / GAME_DIFFICULTY);
+						lastMove = 1;
+					}
+					else
+					{
+						lastMove = 0;
+					}
+				}
+
+				// Make sure ship is still within bounds, fix if not.
+				if (this.getX() < 0)
+					this.setX(0);
+				else if (this.getX() > Game.SCREEN_WIDTH - this.width)
+					this.setX(Game.SCREEN_WIDTH - this.width);
+				framesSinceMovement = 0;
+			}
+			else
+			// Move like last frame until framesSinceMovement reaches threshold
+			{
+				if (lastMove == -1)
 				{
 					setX(getX() + SHIP_SPEED / GAME_DIFFICULTY);
+
 				}
-				else if (centerOfPaddle > ObjectManager.ball.getX())
+				else if (lastMove == 1)
 				{
 					setX(getX() - SHIP_SPEED / GAME_DIFFICULTY);
 				}
+				if (this.getX() < 0)
+				{
+					this.setX(0);
+					lastMove *= -1; // Reverse direction if hitting a wall.
+				}
+				else if (this.getX() > Game.SCREEN_WIDTH - this.width)
+				{
+					this.setX(Game.SCREEN_WIDTH - this.width);
+					lastMove *= -1;
+				}
+				framesSinceMovement++;
 			}
-
-			// Make sure ship is still within bounds, fix if not.
-			if (this.getX() < 0)
-				this.setX(0);
-			else if (this.getX() > Game.SCREEN_WIDTH - this.width)
-				this.setX(Game.SCREEN_WIDTH - this.width);
 		}
 	}
 
