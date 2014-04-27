@@ -14,6 +14,9 @@ public class Game
 {
 	public final static int SCREEN_WIDTH = 800;
 	public final static int SCREEN_HEIGHT = 600;
+	public final static int SCREEN_MENU_HEIGHT = 50;
+	public final static int SCREEN_FIELD_HEIGHT = SCREEN_HEIGHT - SCREEN_MENU_HEIGHT;
+
 	public static int NUM_PLAYERS;
 	public final String GAME_NAME = "Project Space Pong";
 	ObjectManager manager;

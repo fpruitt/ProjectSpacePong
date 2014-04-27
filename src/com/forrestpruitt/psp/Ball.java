@@ -16,6 +16,7 @@ public class Ball extends GameObject
 	public static float ballSpeed = 20;
 	public static float xDirection; // -1 to 1, -1=left, 1=right
 	public static float yDirection; // -1 to 1, -1=down, 1=up
+	private static int framesSinceLastCollision = 100;
 	private Random generator = new Random();
 	public Ball(int id, String tag, String textureLocation)
 	{
@@ -31,7 +32,7 @@ public class Ball extends GameObject
 	{
 		// Set ball in middle of the screen.
 		setX(Game.SCREEN_WIDTH / 2 - getWidth() / 2);
-		setY(Game.SCREEN_HEIGHT / 2 - getHeight() / 2);
+		setY(Game.SCREEN_FIELD_HEIGHT / 2 - getHeight() / 2);
 		// Randomly decided which way the ball starts
 		yDirection = generator.nextInt(2); // Generates either a 0 or a 1
 		assert (yDirection >= -1 && yDirection <= 1);
@@ -43,7 +44,7 @@ public class Ball extends GameObject
 	{
 		setX(getX() + xDirection * (ballSpeed * delta));
 		setY(getY() + yDirection * (ballSpeed * delta));
-		if (getY() >= Game.SCREEN_HEIGHT - getHeight())
+		if (getY() >= Game.SCREEN_FIELD_HEIGHT - getHeight())
 		{
 			// Bottom paddle scores
 			reset();
@@ -60,6 +61,7 @@ public class Ball extends GameObject
 
 	private void checkCollisions()
 	{
+		framesSinceLastCollision++;
 		for (GameObject object : ObjectManager.objects)
 		{
 			String thisTag = object.getTag();
@@ -69,10 +71,11 @@ public class Ball extends GameObject
 			{
 				xDirection *= -1;
 			}
-			//If the ball is hitting a paddle
-			if (object.isIntersecting(this) && (thisTag.equalsIgnoreCase("bottomPaddle") || thisTag.equalsIgnoreCase("topPaddle")))
+			// If the ball is hitting a paddle and it's been more than 10 frames since it last hit a paddle
+			if (object.isIntersecting(this) && (thisTag.equalsIgnoreCase("bottomPaddle") || thisTag.equalsIgnoreCase("topPaddle"))
+					&& framesSinceLastCollision > 10)
 			{
-
+				framesSinceLastCollision = 0;
 				// Decide where on the paddle the ball is hitting
 				// First, find out how large each of the 10 chunks need to be
 				float chunkSize = object.getWidth() / 10;
@@ -97,7 +100,7 @@ public class Ball extends GameObject
 					xDirection = SPOT_THREE;
 					yDirection *= -1;
 				}
-				else if (paddleOffset > 7 * chunkSize && paddleOffset <= 9 * chunkSize)
+				else if (paddleOffset > 6 * chunkSize && paddleOffset <= 9 * chunkSize)
 				{
 					System.out.println("Collision with right-of-center zone of paddle.");
 					xDirection = SPOT_FOUR;

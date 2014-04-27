@@ -25,19 +25,19 @@ public class ObjectManager
 
 		PlayerPaddle topPaddle = new PlayerPaddle(1, "topPaddle", "/res/white.png");
 		topPaddle.setX(Game.SCREEN_WIDTH / 2 - bottomPaddle.width / 2);
-		topPaddle.setY(Game.SCREEN_HEIGHT - topPaddle.height
+		topPaddle.setY(Game.SCREEN_FIELD_HEIGHT - topPaddle.height
 				- PADDLE_HEIGHT_OFFSET);
 
 		// Create the walls
 		GameObject leftWall = new GameObject(2, "leftWall");
 		leftWall.setWidth(10);
-		leftWall.setHeight(Game.SCREEN_HEIGHT);
+		leftWall.setHeight(Game.SCREEN_FIELD_HEIGHT);
 		leftWall.setX(0);
 		leftWall.setY(0);
 		leftWall.initTexture("/res/white.png");
 		GameObject rightWall = new GameObject(3, "rightWall");
 		rightWall.setWidth(10);
-		rightWall.setHeight(Game.SCREEN_HEIGHT);
+		rightWall.setHeight(Game.SCREEN_FIELD_HEIGHT);
 		rightWall.setX(Game.SCREEN_WIDTH - 10);
 		rightWall.setY(0);
 		rightWall.initTexture("/res/white.png");
