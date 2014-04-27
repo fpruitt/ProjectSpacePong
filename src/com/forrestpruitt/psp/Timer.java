@@ -23,7 +23,7 @@ public class Timer
 
 		int delta = (int) (time - lastFrame);
 		lastFrame = time;
-		System.out.println("Time since last frame: " + currentDelta);
+		// System.out.println("Time since last frame: " + currentDelta);
 		currentDelta = (float) delta / 100;
 	}
 
@@ -34,7 +34,7 @@ public class Timer
 	 */
 	public float getDelta()
 	{
-		System.out.println("returning current delta of" + currentDelta);
+		// System.out.println("returning current delta of" + currentDelta);
 		if (currentDelta > .2)
 			return .002f;
 		return currentDelta;
