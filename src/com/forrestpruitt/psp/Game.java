@@ -19,7 +19,7 @@ public class Game
 	ObjectManager manager;
 
 
-	Timer timer;
+	public static Timer timer;
 
 	public Game(int numPlayers)
 	{
@@ -51,7 +51,7 @@ public class Game
 		}
 
 		Display.destroy();
-
+		System.exit(0);
 	}
 
 
@@ -88,7 +88,7 @@ public class Game
 	public void update()
 	{
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-		timer.updateFPS();
+		timer.tick();
 		Display.setTitle(GAME_NAME + "   FPS: " + timer.getFPS());
 		manager.updateObjects();
 

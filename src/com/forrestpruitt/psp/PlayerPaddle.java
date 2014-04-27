@@ -7,7 +7,7 @@ import org.lwjgl.input.Keyboard;
 public class PlayerPaddle extends GameObject
 {
 	// Constants for player ships
-	private final int SHIP_SPEED = 5;
+	private final int SHIP_SPEED = 40;
 	private final float SHIP_WIDTH = 70;
 	private final float SHIP_HEIGHT = 25;
 	private final int MAX_SHOTS = 2; // The maximum number of shots allowed on
@@ -25,30 +25,30 @@ public class PlayerPaddle extends GameObject
 		this.initTexture(spriteLocation);
 	}
 
-	public void update()
+	public void update(float delta)
 	{
-		pollInput();
+		pollInput(delta);
 	}
 
-	public void pollInput()
+	public void pollInput(float delta)
 	{
+		// There is a more robust way to handle this, but let's do it simply for now..
 		// If this is a single player game, only poll for the bottom paddle.
-		int wallColliding = checkWallCollisions(); // -1 = left wall, 0 = no
-													// wall, 1 = right wall
+		int wallColliding = checkWallCollisions(); // -1 = left wall, 0 = no wall, 1 = right wall
 		if (this.tag == "bottomPaddle")
 		{
 			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT))
 			{
 				if (wallColliding != -1)
 				{
-					this.setX(this.getX() - SHIP_SPEED);
+					this.setX(this.getX() - (SHIP_SPEED * delta));
 				}
 			}
 			if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
 			{
 				if (wallColliding != 1)
 				{
-					this.setX(this.getX() + SHIP_SPEED);
+					this.setX(this.getX() + (SHIP_SPEED * delta));
 				}
 			}
 
@@ -64,14 +64,14 @@ public class PlayerPaddle extends GameObject
 			{
 				if (wallColliding != -1)
 				{
-					this.setX(this.getX() - SHIP_SPEED);
+					this.setX(this.getX() - (SHIP_SPEED * delta));
 				}
 			}
 			if (Keyboard.isKeyDown(Keyboard.KEY_D))
 			{
 				if (wallColliding != 1)
 				{
-					this.setX(this.getX() + SHIP_SPEED);
+					this.setX(this.getX() + (SHIP_SPEED * delta));
 				}
 			}
 

@@ -60,7 +60,7 @@ public class ObjectManager
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 		for (GameObject object : objects)
 		{
-			object.update();
+			object.update(Game.timer.getDelta());
 			object.draw();
 		}
 	}

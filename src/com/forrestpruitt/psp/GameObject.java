@@ -149,9 +149,15 @@ public class GameObject
 		}
 	}
 
-	public void update()
+	public void update(float delta)
 	{
 
+	}
+
+	// debugging method
+	protected void printCoords()
+	{
+		System.out.println("Object with tag " + tag + " is currently at x=" + getX() + ", y=" + getY() + ".");
 	}
 
 }

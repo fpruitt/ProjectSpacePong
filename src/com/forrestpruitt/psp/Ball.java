@@ -6,6 +6,7 @@ public class Ball extends GameObject
 {
 	private final float BALL_WIDTH = 25;
 	private final float BALL_HEIGHT = 25;
+	private float ballSpeed = 20;
 	private float xDirection; // -1 to 1, -1=left, 1=right
 	private float yDirection; // -1 to 1, -1=down, 1=up
 	private Random generator = new Random();
@@ -28,9 +29,17 @@ public class Ball extends GameObject
 		yDirection = generator.nextInt(2); // Generates either a 0 or a 1
 		assert (yDirection >= -1 && yDirection <= 1);
 		yDirection = (yDirection == 0) ? -1 : 1; // Adjusts to either -1 or 1
-		xDirection = 0; // Ball starts going either up or down, no left-right movement.
+		xDirection = 0; // Ball starts going either up or down, no left-right movement initially!
 	}
-
+	
+	public void update(float delta)
+	{
+		printCoords();
+		System.out.println(getY() + "+" + yDirection + "*" + ballSpeed + "+" + delta);
+		setX(getX() + xDirection * (ballSpeed * delta));
+		setY(getY() + yDirection * (ballSpeed * delta));
+		printCoords();
+	}
 
 
 }

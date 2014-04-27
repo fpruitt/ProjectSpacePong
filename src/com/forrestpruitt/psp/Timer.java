@@ -5,28 +5,39 @@ import org.lwjgl.Sys;
 public class Timer
 {
 	long lastFps, lastFrame, fps;
+	float currentDelta = 0;
 
-	public void updateFPS()
+	/**
+	 * Update the frames per second for this tick, as well as set this frame's delta.
+	 */
+	public void tick()
 	{
-		if (getTime() - lastFps > 1000)
+		// Update FPS Clock
+		long time = getTime();
+		if (time - lastFps > 1000)
 		{
 			fps = 0;
 			lastFps += 1000;
 		}
 		fps++;
+
+		int delta = (int) (time - lastFrame);
+		lastFrame = time;
+		System.out.println("Time since last frame: " + currentDelta);
+		currentDelta = (float) delta / 100;
 	}
 
 	/**
-	 * Get the number of milliseconds since the last frame.
+	 * Get the time since the last frame in seconds.
 	 * 
 	 * @return the number of milliseconds since the last frame.
 	 */
-	public int getDelta()
+	public float getDelta()
 	{
-		long time = getTime();
-		int delta = (int) (time - lastFrame);
-		lastFrame = time;
-		return delta;
+		System.out.println("returning current delta of" + currentDelta);
+		if (currentDelta > .2)
+			return .002f;
+		return currentDelta;
 	}
 
 	public long getTime()
