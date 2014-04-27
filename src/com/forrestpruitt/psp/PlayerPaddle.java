@@ -7,13 +7,13 @@ import org.lwjgl.input.Keyboard;
 public class PlayerPaddle extends GameObject
 {
 	// Constants for player ships
+	private final float GAME_DIFFICULTY = 1.0f;
 	private final int SHIP_SPEED = 40;
 	private final float SHIP_WIDTH = 100;
 	private final float SHIP_HEIGHT = 15;
 	private final int MAX_SHOTS = 2; // The maximum number of shots allowed on
 										// screen from this ship at once.
-	private int currentShotsFired = 0;
-	private int timeSinceLastShot = 60;
+	public boolean isComputer;
 
 	private LinkedList<GameObject> currentColliding = new LinkedList<GameObject>();
 
@@ -23,6 +23,7 @@ public class PlayerPaddle extends GameObject
 		this.setWidth(SHIP_WIDTH);
 		this.setHeight(SHIP_HEIGHT);
 		this.initTexture(spriteLocation);
+		isComputer = (Game.NUM_PLAYERS == 1) ? true : false;
 	}
 
 	public void update(float delta)
@@ -72,6 +73,29 @@ public class PlayerPaddle extends GameObject
 				if (wallColliding != 1)
 				{
 					this.setX(this.getX() + (SHIP_SPEED * delta));
+				}
+			}
+
+			// Make sure ship is still within bounds, fix if not.
+			if (this.getX() < 0)
+				this.setX(0);
+			else if (this.getX() > Game.SCREEN_WIDTH - this.width)
+				this.setX(Game.SCREEN_WIDTH - this.width);
+		}
+		//Paddle AI
+		else if (this.tag == "topPaddle" && Game.NUM_PLAYERS == 1)
+		{
+			
+			float centerOfPaddle = getX() + (getWidth()/2);
+			if(Ball.yDirection * Ball.ballSpeed > 0)
+			{
+				if (centerOfPaddle < ObjectManager.ball.getX())
+				{
+					setX(getX() + SHIP_SPEED / GAME_DIFFICULTY);
+				}
+				else if (centerOfPaddle > ObjectManager.ball.getX())
+				{
+					setX(getX() - SHIP_SPEED / GAME_DIFFICULTY);
 				}
 			}
 

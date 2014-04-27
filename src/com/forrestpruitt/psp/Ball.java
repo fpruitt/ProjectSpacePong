@@ -13,9 +13,9 @@ public class Ball extends GameObject
 	private final float SPOT_THREE = 0f;
 	private final float SPOT_FOUR = .5f;
 	private final float SPOT_FIVE = 1f;
-	private float ballSpeed = 20;
-	private float xDirection; // -1 to 1, -1=left, 1=right
-	private float yDirection; // -1 to 1, -1=down, 1=up
+	public static float ballSpeed = 20;
+	public static float xDirection; // -1 to 1, -1=left, 1=right
+	public static float yDirection; // -1 to 1, -1=down, 1=up
 	private Random generator = new Random();
 	public Ball(int id, String tag, String textureLocation)
 	{

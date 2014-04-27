@@ -10,6 +10,7 @@ public class ObjectManager
 	static LinkedList<GameObject> objects = new LinkedList<GameObject>();
 	static LinkedList<GameObject> enemies = new LinkedList<GameObject>();
 	private final static int PADDLE_HEIGHT_OFFSET = 5;
+	public static Ball ball = new Ball(3, "ball", "/res/white.png");
 	public ObjectManager()
 	{
 		initObjects();
@@ -18,13 +19,11 @@ public class ObjectManager
 	private static void initObjects()
 	{
 		// Create the two paddles
-		PlayerPaddle bottomPaddle = new PlayerPaddle(0, "bottomPaddle",
-				"/res/white.png");
+		PlayerPaddle bottomPaddle = new PlayerPaddle(0, "bottomPaddle", "/res/white.png");
 		bottomPaddle.setY(PADDLE_HEIGHT_OFFSET);
 		bottomPaddle.setX(Game.SCREEN_WIDTH / 2 - bottomPaddle.width / 2);
 
-		PlayerPaddle topPaddle = new PlayerPaddle(1, "topPaddle",
-				"/res/white.png");
+		PlayerPaddle topPaddle = new PlayerPaddle(1, "topPaddle", "/res/white.png");
 		topPaddle.setX(Game.SCREEN_WIDTH / 2 - bottomPaddle.width / 2);
 		topPaddle.setY(Game.SCREEN_HEIGHT - topPaddle.height
 				- PADDLE_HEIGHT_OFFSET);
@@ -44,14 +43,14 @@ public class ObjectManager
 		rightWall.initTexture("/res/white.png");
 
 		// Make the ball
-		Ball ball = new Ball(3, "ball", "/res/white.png");
+
 
 		// Add Objects to list
 		objects.add(bottomPaddle);
 		objects.add(topPaddle);
 		objects.add(leftWall);
 		objects.add(rightWall);
-		objects.add(ball);
+		// objects.add(ball);
 	}
 
 	// Logically update then draw each object
@@ -63,6 +62,9 @@ public class ObjectManager
 			object.update(Game.timer.getDelta());
 			object.draw();
 		}
+		// Call static ball update seperately
+		ball.update(Game.timer.getDelta());
+		ball.draw();
 	}
 
 	public void doRemove()
