@@ -43,11 +43,15 @@ public class ObjectManager
 		rightWall.setY(0);
 		rightWall.initTexture("/res/white.png");
 
+		// Make the ball
+		Ball ball = new Ball(3, "ball", "/res/white.png");
+
 		// Add Objects to list
 		objects.add(bottomPaddle);
 		objects.add(topPaddle);
 		objects.add(leftWall);
 		objects.add(rightWall);
+		objects.add(ball);
 	}
 
 	// Logically update then draw each object

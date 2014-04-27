@@ -48,7 +48,6 @@ public class PlayerPaddle extends GameObject
 			{
 				if (wallColliding != 1)
 				{
-					System.out.println("Moving right...");
 					this.setX(this.getX() + SHIP_SPEED);
 				}
 			}
