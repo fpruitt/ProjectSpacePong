@@ -9,8 +9,11 @@ public class ObjectManager
 	// Global Collections of Objects
 	static LinkedList<GameObject> objects = new LinkedList<GameObject>();
 	static LinkedList<GameObject> enemies = new LinkedList<GameObject>();
+	static LinkedList<GameObject> toAdd = new LinkedList<GameObject>();
 	private final static int PADDLE_HEIGHT_OFFSET = 5;
 	private final static int WALL_WIDTH = 10;
+	public static float columnsOfInvaders = 7;
+	public static float rowsOfInvaders = 5;
 
 	public static Ball ball = new Ball(3, "ball", "/res/white.png");
 	public ObjectManager()
@@ -18,7 +21,7 @@ public class ObjectManager
 		initObjects();
 	}
 
-	private static void initObjects()
+	public static void initObjects()
 	{
 		// Create the two paddles
 		PlayerPaddle bottomPaddle = new PlayerPaddle(0, "bottomPaddle", "/res/paddleBottom.png");
@@ -70,8 +73,22 @@ public class ObjectManager
 		ball.update(Game.timer.getDelta());
 		ball.draw();
 		doRemove();
+		doAdd();
 	}
 
+	public static void addObject(GameObject object)
+	{
+		toAdd.add(object);
+	}
+
+	private void doAdd()
+	{
+		for (int i = 0; i < toAdd.size(); i++)
+		{
+			objects.add(toAdd.get(i));
+			toAdd.remove(toAdd.get(i));
+		}
+	}
 	public void doRemove()
 	{
 		for (int i = 0; i < objects.size(); i++)
@@ -82,15 +99,13 @@ public class ObjectManager
 			}
 		}
 	}
-
 	private static void initEnemies()
 	{
 		float xMargins = 2 * EnemyShip.SHIP_WIDTH;
 		float yMargins = 2 *EnemyShip.SHIP_WIDTH;
 		float workingRoomY = Game.SCREEN_FIELD_HEIGHT - yMargins;
 		float workingRoomX = Game.SCREEN_WIDTH - xMargins;
-		float columnsOfInvaders = 7;
-		float rowsOfInvaders = 5;
+
 		// Shipwidth * columns is minimum room needed to fit all invaders on the screen
 		// there is extra room; we want to space the invaders out evenly in this room.
 		// working room minus minimum room is the amount of space extra
@@ -120,6 +135,14 @@ public class ObjectManager
 				}
 			}
 		}
+	}
+
+	public void restart()
+	{
+		objects.clear();
+		ball.reset();
+		initObjects();
+
 	}
 
 }

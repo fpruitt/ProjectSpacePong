@@ -7,8 +7,8 @@ import org.lwjgl.input.Keyboard;
 public class PlayerPaddle extends GameObject
 {
 	// Constants for player ships
-	private final int SHIP_SPEED = 40;
-	private final float SHIP_WIDTH = 100;
+	public int PADDLE_SPEED = 40;
+	public static final float SHIP_WIDTH = 100;
 	private final float SHIP_HEIGHT = 15;
 	private final int MAX_SHOTS = 2; // The maximum number of shots allowed on screen from this ship at once.
 	// Parameters for AI
@@ -31,6 +31,17 @@ public class PlayerPaddle extends GameObject
 	public void update(float delta)
 	{
 		pollInput(delta);
+		// Handle powerups
+		if (currentPowerup.equalsIgnoreCase("small") || currentPowerup.equalsIgnoreCase("big"))
+		{
+			timeSincePowerup++;
+			System.out.println(powerupLength - timeSincePowerup);
+			if (timeSincePowerup > powerupLength)
+			{
+				currentPowerup = "";
+				setWidth(PlayerPaddle.SHIP_WIDTH);
+			}
+		}
 	}
 
 	public void pollInput(float delta)
@@ -44,14 +55,14 @@ public class PlayerPaddle extends GameObject
 			{
 				if (wallColliding != -1)
 				{
-					this.setX(this.getX() - (SHIP_SPEED * delta));
+					this.setX(this.getX() - (PADDLE_SPEED * delta));
 				}
 			}
 			if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
 			{
 				if (wallColliding != 1)
 				{
-					this.setX(this.getX() + (SHIP_SPEED * delta));
+					this.setX(this.getX() + (PADDLE_SPEED * delta));
 				}
 			}
 
@@ -67,14 +78,14 @@ public class PlayerPaddle extends GameObject
 			{
 				if (wallColliding != -1)
 				{
-					this.setX(this.getX() - (SHIP_SPEED * delta));
+					this.setX(this.getX() - (PADDLE_SPEED * delta));
 				}
 			}
 			if (Keyboard.isKeyDown(Keyboard.KEY_D))
 			{
 				if (wallColliding != 1)
 				{
-					this.setX(this.getX() + (SHIP_SPEED * delta));
+					this.setX(this.getX() + (PADDLE_SPEED * delta));
 				}
 			}
 
@@ -94,12 +105,12 @@ public class PlayerPaddle extends GameObject
 				{
 					if (centerOfPaddle < (int) ObjectManager.ball.getX())
 					{
-						setX(getX() + SHIP_SPEED / GAME_DIFFICULTY);
+						setX(getX() + PADDLE_SPEED / GAME_DIFFICULTY);
 						lastMove = -1;
 					}
 					else if (centerOfPaddle > (int) ObjectManager.ball.getX())
 					{
-						setX(getX() - SHIP_SPEED / GAME_DIFFICULTY);
+						setX(getX() - PADDLE_SPEED / GAME_DIFFICULTY);
 						lastMove = 1;
 					}
 					else
@@ -120,12 +131,12 @@ public class PlayerPaddle extends GameObject
 			{
 				if (lastMove == -1)
 				{
-					setX(getX() + SHIP_SPEED / GAME_DIFFICULTY);
+					setX(getX() + PADDLE_SPEED / GAME_DIFFICULTY);
 
 				}
 				else if (lastMove == 1)
 				{
-					setX(getX() - SHIP_SPEED / GAME_DIFFICULTY);
+					setX(getX() - PADDLE_SPEED / GAME_DIFFICULTY);
 				}
 				if (this.getX() < 0)
 				{

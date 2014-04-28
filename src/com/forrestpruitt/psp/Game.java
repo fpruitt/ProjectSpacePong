@@ -25,6 +25,8 @@ public class Game
 	public static int scoreMultiplier = 1;
 	public static int hitsWithoutDying = 14;
 
+	public static int enemiesRemaining;
+
 	public static int NUM_PLAYERS;
 	public final String GAME_NAME = "Project Space Pong";
 	ObjectManager manager;
@@ -55,6 +57,7 @@ public class Game
 		}
 		manager = new ObjectManager();
 		GUIManager.init();
+		enemiesRemaining = (int) (ObjectManager.columnsOfInvaders - 1 * ObjectManager.rowsOfInvaders);
 		// standard game loop
 		while (!Display.isCloseRequested())
 		{
@@ -144,6 +147,24 @@ public class Game
 				GUIManager.updateMultiplier(4);
 			}
 		}
+	}
+
+	public void startOver()
+	{
+		player1Score = 0;
+		player2Score = 0;
+		scoreMultiplier = 1;
+		hitsWithoutDying = 0;
+
+		Object[] options =
+		{ "Single Player", "Multiplayer" };
+		JDialog dialog = new JDialog();
+		dialog.setTitle("How Many Players?");
+		int numPlayers = JOptionPane.showOptionDialog(dialog, "Will this be a single player or two-player game?", "A Silly Question",
+				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+		NUM_PLAYERS = numPlayers + 1;
+
+		ObjectManager.initObjects();
 	}
 	public static void main(String[] args) throws IOException, LWJGLException
 	{

@@ -23,5 +23,9 @@ public class EnemyShip extends GameObject
 		this.direction = direction;
 	}
 
+	public void update()
+	{
+
+	}
 
 }

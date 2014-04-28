@@ -16,7 +16,9 @@ public class GameObject
 	protected boolean drawable, enabled;
 	protected Texture texture;
 	protected Rectangle2D.Float box;
-
+	protected int timeSincePowerup = 0;
+	protected String currentPowerup = "";
+	protected int powerupLength = 300;
 	/**
 	 * Most basic constructor, construct with just an id and tag.
 	 * 
@@ -157,6 +159,26 @@ public class GameObject
 	public void update(float delta)
 	{
 
+	}
+
+	public void activateSmallPowerup()
+	{
+		if (currentPowerup.equals(""))
+		{
+			currentPowerup = "small";
+			timeSincePowerup = 0;
+			setWidth(getWidth() / 2f);
+		}
+	}
+
+	public void activateLargePowerup()
+	{
+		if (currentPowerup.equals(""))
+		{
+			currentPowerup = "big";
+			timeSincePowerup = 0;
+			setWidth(getWidth() * 2f);
+		}
 	}
 
 	// debugging method

@@ -18,6 +18,9 @@ public class Ball extends GameObject
 	public static float yDirection; // -1 to 1, -1=down, 1=up
 	private static int framesSinceLastCollision = 100;
 	private Random generator = new Random();
+
+	private int chanceForPowerup = 10; // x/100 chance that a powerup will be dropped.
+
 	public Ball(int id, String tag, String textureLocation)
 	{
 		super(id, tag);
@@ -48,13 +51,19 @@ public class Ball extends GameObject
 		if (getY() >= Game.SCREEN_FIELD_HEIGHT - getHeight())
 		{
 			Game.player1Score += Game.GOAL_POINT_VALUE * Game.scoreMultiplier;
-			reset(); // Resets ball's position
+			reset();
+
 		}
-		if (getY() <= 0)
+		else if (getY() <= 0)
 		{
 			Game.player2Score += Game.GOAL_POINT_VALUE * Game.scoreMultiplier;
 			reset();
 		}
+
+		/*
+		 * if (Game.enemiesRemaining == 0) { // THE GAME ENDS String winningPlayer = ""; winningPlayer = (Game.player1Score > Game.player2Score) ? "Player 1" :
+		 * "Player 2"; System.out.println("Game over, winner = " + winningPlayer); }
+		 */
 		checkCollisions();
 	}
 
@@ -128,11 +137,34 @@ public class Ball extends GameObject
 				object.enabled = false;
 				if (yDirection == 1)
 				{
-					Game.player1Score += Game.ALIEN_POINT_VALUE;
+					Game.player1Score += Game.ALIEN_POINT_VALUE * Game.scoreMultiplier;
 				}
 				else
 				{
-					Game.player2Score += Game.ALIEN_POINT_VALUE;
+					Game.player2Score += Game.ALIEN_POINT_VALUE * Game.scoreMultiplier;
+				}
+				Game.hitsWithoutDying++;
+				Game.enemiesRemaining--;
+
+				// Chance to drop powerup happens now
+				int randomNum = generator.nextInt(100);
+				if (randomNum < chanceForPowerup) // 10% chance to drop a powerup
+				{
+					// Decide which powerup to drop
+					randomNum = generator.nextInt(2);
+					if (randomNum == 0)
+					{
+						// Drop one powerup
+						System.out.println("spawing big powerup");
+						ObjectManager.addObject(new Powerup(-2, "bigPaddle", "/res/green.png", "bigPaddle", yDirection * -1, getX(), getY()));
+					}
+					else if (randomNum == 1)
+					{
+						// drop the other powerup
+						System.out.println("spawing little powerup");
+						ObjectManager.addObject(new Powerup(-2, "littlePaddle", "/res/red.png", "littlePaddle", yDirection * -1, getX(), getY()));
+
+					}
 				}
 			}
 		}
