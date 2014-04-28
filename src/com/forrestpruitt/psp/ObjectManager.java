@@ -69,6 +69,7 @@ public class ObjectManager
 		// Call static ball update seperately
 		ball.update(Game.timer.getDelta());
 		ball.draw();
+		doRemove();
 	}
 
 	public void doRemove()

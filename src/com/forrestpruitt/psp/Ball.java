@@ -123,6 +123,18 @@ public class Ball extends GameObject
 					yDirection *= -1;
 				}
 			}
+			if (object.isIntersecting(this) && object.tag.equalsIgnoreCase("enemy"))
+			{
+				object.enabled = false;
+				if (yDirection == 1)
+				{
+					Game.player1Score += Game.ALIEN_POINT_VALUE;
+				}
+				else
+				{
+					Game.player2Score += Game.ALIEN_POINT_VALUE;
+				}
+			}
 		}
 	}
 
