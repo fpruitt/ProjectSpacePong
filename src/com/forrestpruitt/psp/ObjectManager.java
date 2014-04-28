@@ -61,17 +61,26 @@ public class ObjectManager
 	}
 
 	// Logically update then draw each object
+	public int enemiesRemaining = 0;
 	public void updateObjects()
 	{
+		enemiesRemaining = 0;
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 		for (GameObject object : objects)
 		{
+			if (object.tag.equals("enemy"))
+				enemiesRemaining++;
 			object.update(Game.timer.getDelta());
 			object.draw();
 		}
 		// Call static ball update seperately
 		ball.update(Game.timer.getDelta());
 		ball.draw();
+		if (enemiesRemaining < 1)
+		{
+			initEnemies();
+			ball.ballSpeed += 10;
+		}
 		doRemove();
 		doAdd();
 	}
