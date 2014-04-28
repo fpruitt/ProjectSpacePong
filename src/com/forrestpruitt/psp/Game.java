@@ -13,8 +13,8 @@ import org.lwjgl.opengl.GL11;
 
 public class Game
 {
-	public final static int SCREEN_WIDTH = 1280;
-	public final static int SCREEN_HEIGHT = 768;
+	public final static int SCREEN_WIDTH = 800;
+	public final static int SCREEN_HEIGHT = 600;
 	public final static int SCREEN_MENU_HEIGHT = 50;
 	public final static int SCREEN_FIELD_HEIGHT = SCREEN_HEIGHT - SCREEN_MENU_HEIGHT;
 
