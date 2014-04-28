@@ -6,6 +6,7 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 import org.lwjgl.LWJGLException;
+import org.lwjgl.openal.AL;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
@@ -29,7 +30,9 @@ public class Game
 
 	public static int NUM_PLAYERS;
 	public final String GAME_NAME = "Project Space Pong";
+	public static AudioManager audio;
 	ObjectManager manager;
+
 
 
 	public static Timer timer;
@@ -55,8 +58,10 @@ public class Game
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		audio = new AudioManager();
 		manager = new ObjectManager();
 		GUIManager.init();
+
 		enemiesRemaining = (int) (ObjectManager.columnsOfInvaders - 1 * ObjectManager.rowsOfInvaders);
 		// standard game loop
 		while (!Display.isCloseRequested())
@@ -67,6 +72,7 @@ public class Game
 		}
 
 		Display.destroy();
+		AL.destroy();
 		System.exit(0);
 	}
 

@@ -33,6 +33,8 @@ public class Ball extends GameObject
 	// Reset the ball's location and direction to initial parameters.
 	public void reset()
 	{
+		// Play scoring audio sound
+		Game.audio.playSound("score");
 		// Set ball in middle of the screen.
 		setX(Game.SCREEN_WIDTH / 2 - getWidth() / 2);
 		setY(Game.SCREEN_FIELD_HEIGHT / 2 - getHeight() / 2);
@@ -78,6 +80,7 @@ public class Ball extends GameObject
 			if (object.isIntersecting(this) && (thisTag.equalsIgnoreCase("leftWall") || thisTag.equalsIgnoreCase("rightWall")))
 			{
 				xDirection *= -1;
+				Game.audio.playSound("bounce2");
 			}
 			// If the ball is hitting a paddle and it's been more than 10 frames since it last hit a paddle
 			if (object.isIntersecting(this) && (thisTag.equalsIgnoreCase("bottomPaddle") || thisTag.equalsIgnoreCase("topPaddle"))
@@ -85,6 +88,7 @@ public class Ball extends GameObject
 			{
 				framesSinceLastCollision = 0; // Set to avoid bounce-rebounce loop that occurs sometimes
 				Game.hitsWithoutDying++; // Increase hits without dying towards next score multiplier threshold
+				Game.audio.playSound("bounce1");
 				// Assign Bounce Point Values
 				if (yDirection == 1)
 				{
