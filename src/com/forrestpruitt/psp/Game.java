@@ -114,7 +114,7 @@ public class Game
 	 */
 	private void handleScoreMultiplier()
 	{
-		System.out.println("Hits without dying: " + hitsWithoutDying);
+		// System.out.println("Hits without dying: " + hitsWithoutDying);
 		if (hitsWithoutDying <= 15)
 		{
 			scoreMultiplier = 1;
