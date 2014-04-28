@@ -149,6 +149,11 @@ public class GameObject
 		}
 	}
 
+	protected void setTexture(Texture texture)
+	{
+		this.texture = texture;
+	}
+
 	public void update(float delta)
 	{
 

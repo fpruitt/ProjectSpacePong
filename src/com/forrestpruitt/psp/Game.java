@@ -17,6 +17,9 @@ public class Game
 	public final static int SCREEN_MENU_HEIGHT = 50;
 	public final static int SCREEN_FIELD_HEIGHT = SCREEN_HEIGHT - SCREEN_MENU_HEIGHT;
 
+	public static int player1Score = 0;
+	public static int player2Score = 0;
+
 	public static int NUM_PLAYERS;
 	public final String GAME_NAME = "Project Space Pong";
 	ObjectManager manager;
@@ -34,6 +37,7 @@ public class Game
 	{
 		timer = new Timer();
 
+
 		// initialize opengl context
 		try
 		{
@@ -45,6 +49,7 @@ public class Game
 			e.printStackTrace();
 		}
 		manager = new ObjectManager();
+		GUIManager.init();
 		// standard game loop
 		while (!Display.isCloseRequested())
 		{
@@ -94,6 +99,7 @@ public class Game
 		timer.tick();
 		Display.setTitle(GAME_NAME + "   FPS: " + timer.getFPS());
 		manager.updateObjects();
+		GUIManager.update();
 
 	}
 
