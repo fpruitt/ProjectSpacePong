@@ -33,6 +33,7 @@ public class Ball extends GameObject
 		// Set ball in middle of the screen.
 		setX(Game.SCREEN_WIDTH / 2 - getWidth() / 2);
 		setY(Game.SCREEN_FIELD_HEIGHT / 2 - getHeight() / 2);
+		Game.hitsWithoutDying = 0;
 		// Randomly decided which way the ball starts
 		yDirection = generator.nextInt(2); // Generates either a 0 or a 1
 		assert (yDirection >= -1 && yDirection <= 1);
@@ -46,15 +47,13 @@ public class Ball extends GameObject
 		setY(getY() + yDirection * (ballSpeed * delta));
 		if (getY() >= Game.SCREEN_FIELD_HEIGHT - getHeight())
 		{
-			// Bottom paddle scores
-			reset();
-			// TODO: Add logic for scoring
+			Game.player1Score += Game.GOAL_POINT_VALUE * Game.scoreMultiplier;
+			reset(); // Resets ball's position
 		}
 		if (getY() <= 0)
 		{
-			// Top paddle scores
+			Game.player2Score += Game.GOAL_POINT_VALUE * Game.scoreMultiplier;
 			reset();
-			// TODO: Add logic for scoring
 		}
 		checkCollisions();
 	}
@@ -75,7 +74,18 @@ public class Ball extends GameObject
 			if (object.isIntersecting(this) && (thisTag.equalsIgnoreCase("bottomPaddle") || thisTag.equalsIgnoreCase("topPaddle"))
 					&& framesSinceLastCollision > 10)
 			{
-				framesSinceLastCollision = 0;
+				framesSinceLastCollision = 0; // Set to avoid bounce-rebounce loop that occurs sometimes
+				Game.hitsWithoutDying++; // Increase hits without dying towards next score multiplier threshold
+				// Assign Bounce Point Values
+				if (yDirection == 1)
+				{
+					Game.player2Score += Game.BOUNCE_POINT_VALUE * Game.scoreMultiplier;
+				}
+				else if (yDirection == -1)
+				{
+					Game.player1Score += Game.BOUNCE_POINT_VALUE * Game.scoreMultiplier;
+				}
+
 				// Decide where on the paddle the ball is hitting
 				// First, find out how large each of the 10 chunks need to be
 				float chunkSize = object.getWidth() / 10;

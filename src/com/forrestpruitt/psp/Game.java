@@ -19,6 +19,11 @@ public class Game
 
 	public static int player1Score = 0;
 	public static int player2Score = 0;
+	public static final int GOAL_POINT_VALUE = 200;
+	public static final int BOUNCE_POINT_VALUE = 5;
+	public static final int ALIEN_POINT_VALUE = 10;
+	public static int scoreMultiplier = 1;
+	public static int hitsWithoutDying = 14;
 
 	public static int NUM_PLAYERS;
 	public final String GAME_NAME = "Project Space Pong";
@@ -99,10 +104,47 @@ public class Game
 		timer.tick();
 		Display.setTitle(GAME_NAME + "   FPS: " + timer.getFPS());
 		manager.updateObjects();
+		handleScoreMultiplier();
 		GUIManager.update();
 
 	}
 
+	/**
+	 * Increase score multiplier if players have reached threshold
+	 */
+	private void handleScoreMultiplier()
+	{
+		System.out.println("Hits without dying: " + hitsWithoutDying);
+		if (hitsWithoutDying <= 15)
+		{
+			scoreMultiplier = 1;
+			GUIManager.updateMultiplier(1);
+		}
+		if (scoreMultiplier == 1)
+		{
+			if (hitsWithoutDying > 15)
+			{
+				scoreMultiplier = 2;
+				GUIManager.updateMultiplier(2);
+			}
+		}
+		else if (scoreMultiplier == 2)
+		{
+			if (hitsWithoutDying > 30)
+			{
+				scoreMultiplier = 3;
+				GUIManager.updateMultiplier(3);
+			}
+		}
+		else if (scoreMultiplier == 3)
+		{
+			if (hitsWithoutDying > 50)
+			{
+				scoreMultiplier = 4;
+				GUIManager.updateMultiplier(4);
+			}
+		}
+	}
 	public static void main(String[] args) throws IOException, LWJGLException
 	{
 		/*

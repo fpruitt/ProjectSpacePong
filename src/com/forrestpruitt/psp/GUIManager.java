@@ -32,9 +32,15 @@ public class GUIManager
 	public static GameObject p2S8 = new GameObject(-1, "scoreP2C8");
 	public static GameObject p2S9 = new GameObject(-1, "scoreP2C9");
 
+	public static GameObject player1Label = new GameObject(-1, "player1Label");
+	public static GameObject player2Label = new GameObject(-1, "player2Label");
+
+	public static GameObject multiplierLabel = new GameObject(-1, "mutliplierLabel");
+
 	public static ArrayList<GameObject> player1Score = new ArrayList<GameObject>();
 	public static ArrayList<GameObject> player2Score = new ArrayList<GameObject>();
 	public static ArrayList<Texture> textures = new ArrayList<Texture>();
+	public static ArrayList<Texture> multiplierTextures = new ArrayList<Texture>();
 
 	private static final float CHAR_SIZE = 16; // Width and height the same
 	private static final float OFFSET_FROM_SIDE = 16;
@@ -65,9 +71,9 @@ public class GUIManager
 		player2Score.add(p2S8);
 		player2Score.add(p2S9);
 		
-
 		
 
+		//Set locations and width/height of each character container
 		for(int i = 0; i < 8; i++)
 		{
 			player1Score.get(i).setWidth(CHAR_SIZE);
@@ -79,6 +85,23 @@ public class GUIManager
 			player2Score.get(i).setX(Game.SCREEN_WIDTH - OFFSET_FROM_SIDE - (CHAR_SIZE * (8 - i)));
 			player2Score.get(i).setY(Game.SCREEN_HEIGHT - (Game.SCREEN_MENU_HEIGHT - OFFSET_FROM_BOTTOM));
 		}
+		//Set locations & width/height of player labels
+		player1Label.setX(OFFSET_FROM_SIDE);
+		player1Label.setY(Game.SCREEN_HEIGHT - (OFFSET_FROM_BOTTOM + CHAR_SIZE));
+		player1Label.setWidth(4 * CHAR_SIZE);
+		player1Label.setHeight(CHAR_SIZE);
+		player1Label.initTexture("/res/player1.png");
+
+		player2Label.setX(Game.SCREEN_WIDTH - OFFSET_FROM_SIDE - 8 * CHAR_SIZE);
+		player2Label.setY(Game.SCREEN_HEIGHT - (OFFSET_FROM_BOTTOM + CHAR_SIZE));
+		player2Label.setWidth(4 * CHAR_SIZE);
+		player2Label.setHeight(CHAR_SIZE);
+		player2Label.initTexture("/res/player2.png");
+
+		multiplierLabel.setWidth(CHAR_SIZE);
+		multiplierLabel.setHeight(CHAR_SIZE);
+		multiplierLabel.setX(Game.SCREEN_WIDTH / 2 - multiplierLabel.getWidth() / 2);
+		multiplierLabel.setY(Game.SCREEN_HEIGHT - (OFFSET_FROM_BOTTOM + CHAR_SIZE));
 
 		for (int i = 0; i <= 9; i++)
 		{
@@ -93,7 +116,22 @@ public class GUIManager
 				e.printStackTrace();
 			}
 		}
-		resetScores();
+		for (int i = 0; i <= 3; i++)
+		{
+			try
+			{
+				Texture texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("/res/char_x" + (i + 1) + ".png"));
+				multiplierTextures.add(i, texture);
+				System.out.println("Loaded texture for char x_" + i);
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+		resetScores(); // Set score indicator to zero
+		multiplierLabel.setTexture(multiplierTextures.get(0));
 
 	}
 
@@ -112,7 +150,22 @@ public class GUIManager
 			player1Score.get(i).draw();
 			player2Score.get(i).draw();
 		}
+		player1Label.draw();
+		player2Label.draw();
+		multiplierLabel.draw();
 
+	}
+
+	/**
+	 * Update the multiplier label to match logic
+	 * 
+	 * @param newMultiplier
+	 *            The new multiplier. Value should be 0 to 3, will be adjusted for x1, x2, x3, x4.
+	 */
+	public static void updateMultiplier(int newMultiplier)
+	{
+		assert newMultiplier >= 1 && newMultiplier <= 4;
+		multiplierLabel.setTexture(multiplierTextures.get(newMultiplier - 1));
 	}
 	
 	/**
